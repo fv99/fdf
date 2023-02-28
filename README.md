@@ -5,6 +5,7 @@ First graphical project at 42 Prague, using the [minilibx](https://github.com/42
 >This project is a simple wireframe model representation of a 3D landscape by linking various points (x, y, z) thanks to line segments (edges). The coordinates of the landscape are stored in a .fdf file passed as a parameter to the program.
 
 ## **About:**
+**Mandatory part:**
 - Your program has to display the image in a window.
 - The management of your window must remain smooth (changing to another window, minimizing, and so forth).
 - Pressing ESC must close the window and quit the program in a clean way.
@@ -44,10 +45,10 @@ Each number represents a point in space:
 
 ```shell
 # Clone the repository:
-git clone --recursive https://github.com/fv99/fdf.git
+$> git clone --recursive https://github.com/fv99/fdf.git
 
 # Compile:
-make
+$> make
 
 # Run with valid map as parameter:
 $> ./fdf map.fdf
