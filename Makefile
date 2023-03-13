@@ -6,12 +6,12 @@
 #    By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/06 15:12:49 by fvonsovs          #+#    #+#              #
-#    Updated: 2023/03/07 16:52:14 by fvonsovs         ###   ########.fr        #
+#    Updated: 2023/03/13 14:52:11 by fvonsovs         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	gcc
-CFLAGS		=	-g
+CFLAGS		=	-g -fsanitize=address
 NAME		=	fdf
 SRCS		=	fdf.c
 OBJS		=	${SRCS:.c=.o}

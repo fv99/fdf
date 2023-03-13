@@ -6,11 +6,17 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/08 14:43:54 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/13 15:21:39 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+int	you_fucked_up(char *msg)
+{
+	ft_printf("Usage: %s <[FILE].fdf>\n", msg);
+	exit(0);
+}
 
 void	put_pixel(t_data *data, int x, int y, int color)
 {
@@ -20,52 +26,65 @@ void	put_pixel(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void	render_background(t_data *img, int color)
+void	print_controls(t_data *data)
 {
-	int	x;
-	int	y;
+	mlx_string_put(data->mlx, data->win, 10, 10, 0xFFFFFF, "controls go here");
 
-	x = 0;
-	while (x < WINDOW_HEIGHT)
-	{
-		y = 0;
-		while (y < WINDOW_WIDTH)
-			put_pixel(img, y++, x, color);
-		++x;
-	}
+
 }
 
-int	handle_close_keypress(int keysym, t_vars *data)
+// will print a vertical strip from start_x to ensd_x
+void	render_background(t_data *data, int color, int start_x, int end_x)
+{
+	int x;
+	int y;
+
+	y = 0;
+	while (y < WINDOW_HEIGHT)
+	{
+		x = start_x;
+		while (x < end_x)
+			put_pixel(data, x++, y, color);
+		++y;
+	}
+	print_controls(data);
+}
+
+int		handle_keypress(int keysym, t_data *data)
 {
 	if (keysym == XK_Escape)
 	{
 		mlx_destroy_window(data->mlx, data->win);
 		data->win = NULL;
 	}
-	return (0);
+	exit (0);
 }
 
-int	main(void)
+void	render(t_data *data)
 {
-	t_data	img;
-	t_vars	vars;
+	data->mlx = mlx_init();
+	data->win = mlx_new_window(data->mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Fuck you");
+	data->img = mlx_new_image(data->mlx,  WINDOW_WIDTH, WINDOW_HEIGHT);
+	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length,
+								&data->endian);
+	render_background(data, BACKGROUND_COLOUR, 0, 200);
+	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+	mlx_hook(data->win, 2, 1L<<0, handle_keypress, data);
+	mlx_loop(data->mlx);
+}
 
-	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Fuck you");
-	if (vars.win == NULL || vars.mlx == NULL)
+int		main(int argc, char **argv)
+{
+	t_data	*data;
+
+	if (argc == 2)
 	{
-		free(vars.win);
-		return (1);
+		data = malloc(sizeof(t_data));
+		render(data);
+
 	}
-	img.img = mlx_new_image(vars.mlx,  WINDOW_WIDTH, WINDOW_HEIGHT);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
-								&img.endian);
-	render_background(&img, BACKGROUND_COLOUR);
-	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
-	mlx_hook(vars.win, 2, 1L<<0, handle_close_keypress, &vars);
-	mlx_loop(vars.mlx);
-	mlx_destroy_image(vars.mlx, img.img);
-	mlx_destroy_display(vars.mlx);
-	free(vars.mlx);
+	else
+		you_fucked_up(argv[0]);
+	exit(0);
 }
 
