@@ -6,27 +6,13 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:52:26 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/13 17:36:29 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/13 17:53:00 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		count_words(char *str, char c)
-{
-	int i;
-
-	i = 0;
-	while(*str)
-	{
-		if (*str != c)
-			++i;
-		while (*str && *str != c)
-			++str;
-	}
-	return(i);
-}
-
+// initializes map for usage
 t_map	*map_init(void)
 {
 	t_map *map;
@@ -42,18 +28,64 @@ t_map	*map_init(void)
 	return(map);
 }
 
+// will free array of strings created by ft_split
+void	free_split(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+
+// counts the amount of coords in each line of file
+int		count_words(char *str, char c)
+{
+	int i;
+
+	i = 0;
+	while(*str)
+	{
+		if (*str != c)
+			++i;
+		while (*str && *str != c)
+			++str;
+	}
+	return(i);
+}
+
 int	*parse_line(char *line, t_map *map)
 {
-	
+	int 	*row;
+	char	**words;
+	int		i;
 
-
-
+	words = ft_split(line, ' ');
+	row = malloc(sizeof(int) * width);
+	if (!row || !words)
+	{
+		free_split(words);
+		you_fucked_up("ft_split or malloc failed in parse_line");
+	}
+	i = -1;
+	while (++i < width)
+	{
+		row[i] = ft_atoi(words[i]);
+		// finish this
+	}
+	free_split(words);
+	return ()
 }
 
 t_map	*read_file(t_map *map, char *filename)
 {
 	int		fd;
 	char	*line;
+	int		width;
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
@@ -62,8 +94,9 @@ t_map	*read_file(t_map *map, char *filename)
 	while(line != NULL)
 	{
 		line = get_next_line(fd);
-		parse_line(line, map, z_min, z_max);
-
+		map->width = count_words(line, ' ');
+		parse_line(line, map, width);
+		// to do
 
 	}
 	
