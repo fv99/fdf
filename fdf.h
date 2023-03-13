@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:12:54 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/13 14:40:17 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/13 15:51:38 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,13 @@ typedef struct	s_data {
 	int		endian;
 }	t_data;
 
+typedef struct s_map
+{
+	int	height;
+	int	width;
+	int	***array;
+	int	z_max;
+	int	z_min;
+}	t_map;
 
 #endif

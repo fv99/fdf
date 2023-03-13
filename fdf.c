@@ -6,16 +6,16 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/13 15:21:39 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/13 16:37:01 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	you_fucked_up(char *msg)
+int		you_fucked_up(char *msg)
 {
-	ft_printf("Usage: %s <[FILE].fdf>\n", msg);
-	exit(0);
+	ft_printf("ERROR: %s", msg);
+	exit(1);
 }
 
 void	put_pixel(t_data *data, int x, int y, int color)
@@ -33,7 +33,7 @@ void	print_controls(t_data *data)
 
 }
 
-// will print a vertical strip from start_x to ensd_x
+// will print a vertical strip from start_x to end_x
 void	render_background(t_data *data, int color, int start_x, int end_x)
 {
 	int x;
@@ -47,7 +47,7 @@ void	render_background(t_data *data, int color, int start_x, int end_x)
 			put_pixel(data, x++, y, color);
 		++y;
 	}
-	print_controls(data);
+	// print_controls(data);
 }
 
 int		handle_keypress(int keysym, t_data *data)
@@ -76,15 +76,16 @@ void	render(t_data *data)
 int		main(int argc, char **argv)
 {
 	t_data	*data;
+	t_map	*map;
 
 	if (argc == 2)
 	{
 		data = malloc(sizeof(t_data));
+		map = map_init(argv[1]);
 		render(data);
-
 	}
 	else
-		you_fucked_up(argv[0]);
+		ft_printf("Usage: %s <[FILE].fdf>\n", argv[0]);
 	exit(0);
 }
 
