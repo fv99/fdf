@@ -6,14 +6,14 @@
 #    By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/06 15:12:49 by fvonsovs          #+#    #+#              #
-#    Updated: 2023/03/13 14:52:11 by fvonsovs         ###   ########.fr        #
+#    Updated: 2023/03/14 14:47:59 by fvonsovs         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	gcc
-CFLAGS		=	-g -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror -g -fsanitize=address
 NAME		=	fdf
-SRCS		=	fdf.c
+SRCS		=	fdf.c fdf_parse_maps.c
 OBJS		=	${SRCS:.c=.o}
 LIBC		=	ar -cvq
 RM			=	rm -f

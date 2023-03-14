@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:12:54 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/13 15:51:38 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:19:47 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,36 @@ typedef struct s_map
 {
 	int	height;
 	int	width;
-	int	***array;
+	int	**array;
 	int	z_max;
 	int	z_min;
 }	t_map;
+
+// function definitions
+int		you_fucked_up(char *msg);
+
+void	put_pixel(t_data *data, int x, int y, int color);
+
+void	print_controls(t_data *data);
+
+void	render_background(t_data *data, int color, int start_x, int end_x);
+
+int		handle_keypress(int keysym, t_data *data);
+
+void	render(t_data *data);
+
+t_map	*map_init(void);
+
+void	free_split(char **str);
+
+int		get_height(char *filename);
+
+int		count_words(char *str, char c);
+
+int		*parse_line(char *line, t_map *map);
+
+t_map	*read_file(t_map *map, char *filename);
+
+int		test_map_read(t_map *map);
 
 #endif

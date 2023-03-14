@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/13 17:28:18 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:22:39 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		you_fucked_up(char *msg)
 {
-	ft_printf("ERROR: %s", msg);
+	ft_printf("\tERROR: %s\n", msg);
 	exit(1);
 }
 
@@ -81,10 +81,12 @@ int		main(int argc, char **argv)
 	if (argc == 2)
 	{
 		data = malloc(sizeof(t_data));
-		map = map_init(map, argv[1]);
+		map = map_init();
+		map = read_file(map, argv[1]);
 		if (!map)
 			you_fucked_up("Error loading map");
-		test_map_read(map, argv[1]);
+		test_map_read(map);
+		free(map);
 		render(data);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:52:26 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/13 17:53:00 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:23:35 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_map	*map_init(void)
 
 	map = (t_map *)malloc(sizeof(t_map));
 	if (!map)
-		you_fucked_up("Error loading map");
+		you_fucked_up("Error allocating map in map_init");
 	map->height = 0;
 	map->width = 0;
 	map->array = NULL;
@@ -42,22 +42,52 @@ void	free_split(char **str)
 	free(str);
 }
 
+// finds the height of our map based on amount of lines
+int		get_height(char *filename)
+{
+	int		fd; 
+	int		height;
+	char	*line;
+
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+		you_fucked_up("Cannot read from file in get_height");
+	height = 0;
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		free(line);
+		line = get_next_line(fd);
+		height++;
+	}
+	free(line);
+	close(fd);
+	return(height);
+}
+
 // counts the amount of coords in each line of file
 int		count_words(char *str, char c)
 {
 	int i;
 
 	i = 0;
+	if (!str || *str == '\0')
+        return (0);
 	while(*str)
 	{
 		if (*str != c)
+		{
 			++i;
-		while (*str && *str != c)
-			++str;
+			while (*str && *str != c)
+				++str;
+		}
+		else
+			str++;
 	}
 	return(i);
 }
 
+// parses line to find value of each point
 int	*parse_line(char *line, t_map *map)
 {
 	int 	*row;
@@ -65,48 +95,57 @@ int	*parse_line(char *line, t_map *map)
 	int		i;
 
 	words = ft_split(line, ' ');
-	row = malloc(sizeof(int) * width);
+	row = malloc(sizeof(int) * map->width);
 	if (!row || !words)
 	{
 		free_split(words);
 		you_fucked_up("ft_split or malloc failed in parse_line");
 	}
 	i = -1;
-	while (++i < width)
+	while (++i < map->width)
 	{
 		row[i] = ft_atoi(words[i]);
-		// finish this
+		if (row[i] > map->z_max)
+			map->z_max = row[i];
+		if (row[i] < map->z_min)
+			map->z_min = row[i];
 	}
 	free_split(words);
-	return ()
+	return (row);
 }
 
 t_map	*read_file(t_map *map, char *filename)
 {
 	int		fd;
 	char	*line;
-	int		width;
+	int		i;
 
+	i = 0;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		you_fucked_up("Cannot read from file");
-	map = map_init();
+		you_fucked_up("Cannot read from file in read_file");
+	line = get_next_line(fd);
+	map->height = get_height(filename);
+	map->width = count_words(line, ' ');
+	map->array = malloc(sizeof(int **) * map->height);
+	if (!map->array)
+        you_fucked_up("Allocation failed in read_file");
 	while(line != NULL)
 	{
+		map->array[i] = malloc(sizeof(int *) * map->width);
+		if (!map->array[i])
+        	you_fucked_up("Allocation failed in read_file");
+		map->array[i] = parse_line(line, map);
+		free(line);
+		i++;
 		line = get_next_line(fd);
-		map->width = count_words(line, ' ');
-		parse_line(line, map, width);
-		// to do
-
 	}
-	
-	
-	
+	close(fd);
 	return(map);
 }
 
-// test function for map parsing, will print contents of map struct
-int	test_map_read(t_map *map, char *filename)
+// test function, will print contents of map array
+int test_map_read(t_map *map)
 {
 	int i, j;
 
@@ -120,8 +159,9 @@ int	test_map_read(t_map *map, char *filename)
 	{
 		for (j = 0; j < map->width; j++)
 		{
-			printf("%d ", map->array[i][j]);
+			printf("%i ", map->array[i][j]);
 		}
 		printf("\n");
 	}
+	return (0);
 }
