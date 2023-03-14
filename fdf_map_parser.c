@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:52:26 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/14 16:51:23 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/14 18:07:26 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,13 @@ t_map	*parse_map(t_map *map, char *filename)
 	i = 0;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		you_fucked_up("Cannot read from file in read_file");
+		you_fucked_up("Cannot read from file in parse_map");
 	line = get_next_line(fd);
 	map->height = get_height(filename);
 	map->width = count_words(line, ' ');
 	map->array = malloc(sizeof(int **) * map->height);
 	if (!map->array)
-        you_fucked_up("Allocation failed in read_file");
+        you_fucked_up("Allocation failed in parse_map");
 	while(line != NULL)
 	{
 		map->array[i] = parse_line(line, map);

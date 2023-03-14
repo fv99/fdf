@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/14 16:52:24 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/14 18:00:33 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	render_background(t_data *data, int color, int start_x, int end_x)
 			put_pixel(data, x++, y, color);
 		++y;
 	}
-	// print_controls(data);
+	print_controls(data);
 }
 
 int		handle_keypress(int keysym, t_data *data)
