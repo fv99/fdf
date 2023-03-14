@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:12:54 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/14 16:19:47 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:45:06 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int		handle_keypress(int keysym, t_data *data);
 void	render(t_data *data);
 
 t_map	*map_init(void);
+
+void	free_map_array(t_map *map);
 
 void	free_split(char **str);
 

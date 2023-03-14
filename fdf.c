@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/14 16:22:39 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:42:11 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,9 @@ int		main(int argc, char **argv)
 		if (!map)
 			you_fucked_up("Error loading map");
 		test_map_read(map);
-		free(map);
+		free_map_array(map);
 		render(data);
+		free(data);
 	}
 	else
 		ft_printf("Usage: %s <[FILE].fdf>\n", argv[0]);
