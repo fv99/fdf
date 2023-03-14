@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf_parse_maps.c                                   :+:      :+:    :+:   */
+/*   fdf_map_parser.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:52:26 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/14 16:45:42 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:51:23 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ int	*parse_line(char *line, t_map *map)
 	return (row);
 }
 
-t_map	*read_file(t_map *map, char *filename)
+// returns a map struct with array storing X-Y-Z values from file
+t_map	*parse_map(t_map *map, char *filename)
 {
 	int		fd;
 	char	*line;

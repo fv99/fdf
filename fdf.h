@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:12:54 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/14 16:45:06 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:51:36 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int		count_words(char *str, char c);
 
 int		*parse_line(char *line, t_map *map);
 
-t_map	*read_file(t_map *map, char *filename);
+t_map	*parse_map(t_map *map, char *filename);
 
 int		test_map_read(t_map *map);
 

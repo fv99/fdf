@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/14 16:42:11 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:52:24 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int		main(int argc, char **argv)
 	{
 		data = malloc(sizeof(t_data));
 		map = map_init();
-		map = read_file(map, argv[1]);
+		map = parse_map(map, argv[1]);
 		if (!map)
 			you_fucked_up("Error loading map");
 		test_map_read(map);
@@ -94,4 +94,3 @@ int		main(int argc, char **argv)
 		ft_printf("Usage: %s <[FILE].fdf>\n", argv[0]);
 	exit(0);
 }
-
