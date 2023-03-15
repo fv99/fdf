@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:12:54 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/15 14:13:40 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/15 16:06:50 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct	s_data {
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int		buffer_index;
 	void	*offscreen_img;
 	char	*offscreen_addr;
 }	t_data;
@@ -71,9 +72,7 @@ void	print_controls(t_data *data);
 
 void	render_background(t_data *data, int color, int start_x, int end_x);
 
-int		handle_keypress(int keysym, t_data *data);
-
-void	redraw(t_data *data);
+int		key_hook(int keysym, t_data *data);
 
 void	render(t_data *data);
 
