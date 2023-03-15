@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:12:54 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/14 18:01:37 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/15 14:13:40 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ typedef struct	s_data {
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	void	*offscreen_img;
+	char	*offscreen_addr;
 }	t_data;
 
 typedef struct s_map
@@ -50,16 +52,28 @@ typedef struct s_map
 	int	z_min;
 }	t_map;
 
+typedef struct s_2d
+{
+	int x;
+	int y;
+}	t_2d;
+
+typedef struct s_increment
+{
+	int x;
+	int y;
+}	t_increment;
+
 // function definitions
 int		you_fucked_up(char *msg);
-
-void	put_pixel(t_data *data, int x, int y, int color);
 
 void	print_controls(t_data *data);
 
 void	render_background(t_data *data, int color, int start_x, int end_x);
 
 int		handle_keypress(int keysym, t_data *data);
+
+void	redraw(t_data *data);
 
 void	render(t_data *data);
 
@@ -78,5 +92,13 @@ int		*parse_line(char *line, t_map *map);
 t_map	*parse_map(t_map *map, char *filename);
 
 int		test_map_read(t_map *map);
+
+t_increment	*calculate_increment(t_increment *inc, int x1, int x2, int y1, int y2);
+
+void	update_error(int *error, int *coord, int error_diff, int coord_diff, int diff);
+
+void	bresenham_line(t_data *data, t_2d p1, t_2d p2, int color);
+
+void	test_bresenham_line(t_data *data);
 
 #endif
