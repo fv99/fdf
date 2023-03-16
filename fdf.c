@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/15 16:06:21 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/16 14:24:12 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,68 +50,38 @@ int		handle_keypress(int keysym, t_data *data)
 	return(0);
 }
 
-// double buffering yo
-void	redraw(t_data *data)
+int	render(t_data *data)
 {
-	char	*temp_addr;
-	void	*temp_img;
-
-	print_controls(data);
-	test_bresenham_line(data);
-	mlx_put_image_to_window(data->mlx, data->win, data->offscreen_img, 0, 0);
-	temp_addr = data->addr;
-	data->addr = data->offscreen_addr;
-	data->offscreen_addr = temp_addr;
-	temp_img = data->img;
-	data->img = data->offscreen_img;
-	data->offscreen_img = temp_img;
-
-    mlx_destroy_image(data->mlx, data->offscreen_img);
-    data->offscreen_img = mlx_new_image(data->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-    data->offscreen_addr = mlx_get_data_addr(data->offscreen_img, &data->bits_per_pixel,
-                                              &data->line_length, &data->endian);
-}
-
-int	redraw_wrapper(void *param)
-{
-	t_data *data = (t_data *)param;
-	redraw(data);
-	return(0);
-}
-
-void	render(t_data *data)
-{
-	data->mlx = mlx_init();
-	data->win = mlx_new_window(data->mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Fuck you");
-
-	data->img = mlx_new_image(data->mlx,  WINDOW_WIDTH, WINDOW_HEIGHT);
-	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->line_length,
-									&data->endian);
-
-	data->offscreen_img = mlx_new_image(data->mlx,  WINDOW_WIDTH, WINDOW_HEIGHT);
-	data->offscreen_addr = mlx_get_data_addr(data->offscreen_img, &data->bits_per_pixel,
-												&data->line_length, &data->endian);
-	mlx_hook(data->win, 2, 1L<<0, handle_keypress, data);
-	mlx_loop_hook(data->mlx, redraw_wrapper, data);
-	mlx_loop(data->mlx);
+	if (data->win != NULL)
+	{
+		test_bresenham_line(data);
+		print_controls(data);
+	}
+	return (0);
 }
 
 int		main(int argc, char **argv)
 {
-	t_data	*data;
+	t_data	data;
 	t_map	*map;
 
 	if (argc == 2)
 	{
-		data = malloc(sizeof(t_data));
 		map = map_init();
 		map = parse_map(map, argv[1]);
 		if (!map)
 			you_fucked_up("Error loading map");
 		test_map_read(map);
 		free_map_array(map);
-		render(data);
-		free(data);
+
+		data.mlx = mlx_init();
+		data.win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Fuck you");
+		mlx_loop_hook(data.mlx, &render, &data);
+		mlx_hook(data.win, 2, 1L<<0, handle_keypress, &data);
+		mlx_loop(data.mlx);
+
+		mlx_destroy_display(data.mlx);
+		free(data.mlx);
 	}
 	else
 		ft_printf("Usage: %s <[FILE].fdf>\n", argv[0]);

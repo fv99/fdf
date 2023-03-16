@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 12:53:09 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/15 14:07:36 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/15 16:53:58 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,24 +83,24 @@ void	test_bresenham_line(t_data *data)
 	p1.x = 300;
 	p1.y = 300;
 	p2.x = 500;
-	p2.x = 200;
+	p2.y = 200;
 	bresenham_line (data, p1, p2, 0xFFFFFF);
 
 	p1.x = 500;
 	p1.y = 500;
 	p2.x = 400;
-	p2.x = 300;
+	p2.y = 300;
 	bresenham_line (data, p1, p2, 0xFFFFFF);
 
 	p1.x = 900;
 	p1.y = 500;
 	p2.x = 200;
-	p2.x = 400;
+	p2.y = 400;
 	bresenham_line (data, p1, p2, 0xFFFFFF);
 
 	p1.x = 200;
 	p1.y = 500;
 	p2.x = 200;
-	p2.x = 450;
+	p2.y = 450;
 	bresenham_line (data, p1, p2, 0xFFFFFF);	
 }

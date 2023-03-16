@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:12:54 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/15 16:06:50 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/16 14:18:21 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	render_background(t_data *data, int color, int start_x, int end_x);
 
 int		key_hook(int keysym, t_data *data);
 
-void	render(t_data *data);
+int		render(t_data *data);
 
 t_map	*map_init(void);
 
