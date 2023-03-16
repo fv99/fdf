@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 16:44:13 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/14 16:48:11 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/16 14:30:05 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	free_map_array(t_map *map)
 	map->width = 0;
 	map->z_max = 0;
 	map->z_min = 0;
+	free(map);
 }
 
 // will free array of strings created by ft_split

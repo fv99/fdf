@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/16 14:24:12 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/16 14:25:00 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		handle_keypress(int keysym, t_data *data)
 	return(0);
 }
 
-int	render(t_data *data)
+int		render(t_data *data)
 {
 	if (data->win != NULL)
 	{
