@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf_draw_utils.c                                   :+:      :+:    :+:   */
+/*   fdf_draw_bresenham_line.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 12:53:09 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/15 16:53:58 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/16 17:58:48 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	update_error(int *error, int *coord, int error_diff, int coord_diff, int di
 {
 	if(*error > 0)
 	{
-		coord += coord_diff;
+		*coord += coord_diff;
 		*error -= 2 * diff;
 	}
 	*error += 2 * error_diff;
