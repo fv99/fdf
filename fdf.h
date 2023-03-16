@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:12:54 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/16 14:18:21 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/16 17:21:52 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,19 @@
 // colours
 #define BACKGROUND_COLOUR 0x2a2a2a
 
-// structs
-typedef struct	s_data {
-	void	*mlx;
-	void	*win;
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-	int		buffer_index;
-	void	*offscreen_img;
-	char	*offscreen_addr;
-}	t_data;
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
 
+#ifndef ANGLE
+    #define ANGLE 10.0
+#endif
+
+#ifndef SCALE
+    #define SCALE 30.0
+#endif
+
+// map holding struct
 typedef struct s_map
 {
 	int	height;
@@ -53,6 +52,29 @@ typedef struct s_map
 	int	z_min;
 }	t_map;
 
+// main data holding struct
+typedef struct	s_data
+{
+	void	*mlx;
+	void	*win;
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+	t_map	*map;
+}	t_data;
+
+// struct for x y z
+typedef struct s_3d
+{
+	int	x;
+	int	y;
+	int	z;
+}	t_3d;
+
+
+// structs for 2d points and bresenham line increments
 typedef struct s_2d
 {
 	int x;
@@ -64,6 +86,18 @@ typedef struct s_increment
 	int x;
 	int y;
 }	t_increment;
+
+// struct for transformations
+typedef struct s_transform
+{
+	int	scale;
+	int	x_angle;
+	int	y_angle;
+	int	z_angle;
+	int	x_offset;
+	int	y_offset;
+}	t_transform;
+
 
 // function definitions
 int		you_fucked_up(char *msg);
@@ -99,5 +133,11 @@ void	update_error(int *error, int *coord, int error_diff, int coord_diff, int di
 void	bresenham_line(t_data *data, t_2d p1, t_2d p2, int color);
 
 void	test_bresenham_line(t_data *data);
+
+t_3d	get_3d_point_from_map(t_map *map, int x, int y);
+
+t_2d	convert_3d_to_2d(t_3d p, float scale, float angle, t_2d offset);
+
+void	draw_wireframe(t_data *data, t_map *map, int color);
 
 #endif

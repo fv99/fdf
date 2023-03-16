@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/16 14:25:00 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/16 17:20:30 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int		render(t_data *data)
 {
 	if (data->win != NULL)
 	{
-		test_bresenham_line(data);
+		draw_wireframe(data, data->map, 0xFFFFFF);
 		print_controls(data);
 	}
 	return (0);
@@ -72,8 +72,7 @@ int		main(int argc, char **argv)
 		if (!map)
 			you_fucked_up("Error loading map");
 		test_map_read(map);
-		free_map_array(map);
-
+		data.map = map;
 		data.mlx = mlx_init();
 		data.win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Fuck you");
 		mlx_loop_hook(data.mlx, &render, &data);
@@ -81,6 +80,7 @@ int		main(int argc, char **argv)
 		mlx_loop(data.mlx);
 
 		mlx_destroy_display(data.mlx);
+		free_map_array(map);
 		free(data.mlx);
 	}
 	else
