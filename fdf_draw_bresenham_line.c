@@ -6,11 +6,29 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 12:53:09 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 17:02:52 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/19 17:45:54 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+// will draw a vertical strip from start_x to end_x
+int	render_background(t_data *data, int color, int start_x, int end_x)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < WINDOW_HEIGHT)
+	{
+		x = start_x;
+		while (x < end_x)
+			mlx_pixel_put(data->mlx, data->win, x++, y, color);
+		++y;
+	}
+	print_controls(data);
+	return (0);
+}
 
 // calculates the direction in which line should be drawn
 t_increment	*calculate_increment(t_increment *inc, int x1, int x2, int y1, int y2)
@@ -75,6 +93,7 @@ void	bresenham_line(t_data *data, t_2d p1, t_2d p2, int color)
 	}
 }
 
+/* 
 // test function
 void	test_bresenham_line(t_data *data)
 {
@@ -104,3 +123,4 @@ void	test_bresenham_line(t_data *data)
 	p2.y = 450;
 	bresenham_line (data, p1, p2, 0xFFFFFF);	
 }
+ */

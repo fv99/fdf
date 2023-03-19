@@ -6,12 +6,13 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 16:44:13 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/16 14:30:05 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/19 17:44:04 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
+/* 
 // test function, will print contents of map array
 int test_map_read(t_map *map)
 {
@@ -33,6 +34,7 @@ int test_map_read(t_map *map)
 	}
 	return (0);
 }
+ */
 
 // initializes map for usage
 t_map	*map_init(void)

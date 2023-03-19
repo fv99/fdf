@@ -6,13 +6,13 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 17:29:34 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/19 17:46:44 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		you_fucked_up(char *msg)
+int	you_fucked_up(char *msg)
 {
 	ft_printf("\tERROR: %s\n", msg);
 	exit(1);
@@ -21,32 +21,15 @@ int		you_fucked_up(char *msg)
 void	print_controls(t_data *data)
 {
 	mlx_string_put(data->mlx, data->win, 10, 10, 0xFFFFFF, "Controls:");
-	mlx_string_put(data->mlx, data->win, 10, 30, 0xFFFFFF, "[WASD]  Move Camera");
+	mlx_string_put(data->mlx, data->win, 10, 30, 0xFFFFFF, "[WASD]  Movement");
 	mlx_string_put(data->mlx, data->win, 10, 45, 0xFFFFFF, "[Q/E]   Rotate");
 	mlx_string_put(data->mlx, data->win, 10, 60, 0xFFFFFF, "[+/-]   Zoom");
 	mlx_string_put(data->mlx, data->win, 10, 75, 0xFFFFFF, "[ESC]   Exit");
 }
 
-// will print a vertical strip from start_x to end_x
-void	render_background(t_data *data, int color, int start_x, int end_x)
+int	handle_keypress(int keysym, t_data *data)
 {
-	int x;
-	int y;
-
-	y = 0;
-	while (y < WINDOW_HEIGHT)
-	{
-		x = start_x;
-		while (x < end_x)
-			mlx_pixel_put(data->mlx, data->win, x++, y, color);
-		++y;
-	}
-	print_controls(data);
-}
-
-int		handle_keypress(int keysym, t_data *data)
-{
-	t_transform *transform;
+	t_transform	*transform;
 
 	transform = &data->transform;
 	if (keysym == XK_Escape)
@@ -70,13 +53,12 @@ int		handle_keypress(int keysym, t_data *data)
 		transform->z_angle += 2;
 	else if (keysym == XK_e || keysym == XK_E)
 		transform->z_angle -= 2;
-	render_background(data, 0x000000, 0, WINDOW_WIDTH);
-	return(0);
+	return (render_background(data, 0x000000, 0, WINDOW_WIDTH));
 }
 
-int		render(t_data *data)
+int	render(t_data *data)
 {
-	t_transform_vars v;
+	t_transform_vars	v;
 
 	v = init_transform_vars(&data->transform);
 	if (data->win != NULL)
@@ -87,7 +69,7 @@ int		render(t_data *data)
 	return (0);
 }
 
-int		main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_data	data;
 	t_map	*map;
@@ -98,13 +80,12 @@ int		main(int argc, char **argv)
 		map = parse_map(map, argv[1]);
 		if (!map)
 			you_fucked_up("Error loading map");
-		test_map_read(map);
 		data.transform = init_transform();
 		data.map = map;
 		data.mlx = mlx_init();
-		data.win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Fuck you");
+		data.win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "FdF");
 		mlx_loop_hook(data.mlx, &render, &data);
-		mlx_hook(data.win, 2, 1L<<0, handle_keypress, &data);
+		mlx_hook(data.win, 2, 1L << 0, handle_keypress, &data);
 		mlx_loop(data.mlx);
 		mlx_destroy_display(data.mlx);
 		free_map_array(map);
