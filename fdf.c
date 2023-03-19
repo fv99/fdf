@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 18:21:28 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/19 18:24:23 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_controls(t_data *data)
 	mlx_string_put(data->mlx, data->win, 10, 45, 0xFFFFFF, "[Q/E]   Rotate");
 	mlx_string_put(data->mlx, data->win, 10, 60, 0xFFFFFF, "[+/-]   Zoom");
 	mlx_string_put(data->mlx, data->win, 10, 75, 0xFFFFFF, \
-	"[P]   Switch projection");
+	"[P]     Switch projection");
 	mlx_string_put(data->mlx, data->win, 10, 90, 0xFFFFFF, "[ESC]   Exit");
 	if (data->project == 0)
 		mlx_string_put(data->mlx, data->win, 1150, 10, 0xFFFFFF, "Projection: Isometric");
