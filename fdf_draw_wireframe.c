@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 16:43:16 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/16 18:01:36 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/19 17:10:01 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,43 +45,47 @@ t_2d	convert_3d_to_2d(t_3d p, float scale, float angle, t_2d offset)
 	return(projection);
 }
 
-// wireframe drawing function
-void	draw_wireframe(t_data *data, t_map *map, int color)
+t_transform	init_transform()
 {
-	int		i;
-	int		j;
-	t_2d 	projection;
-	t_2d	prev_projection;
-	t_2d	offset;
-	t_2d	projection_above;
-	t_3d	point;
-	t_3d	point_above;
-	float	angle;
-	float	scale;
+	t_transform transform;
 
-	scale = 50.0;
-	angle = 45.0;
-	offset.x = WINDOW_WIDTH / 2;
-	offset.y = 200;
-	i = 0;
-	while (i < map->height)
+	transform.scale = 50;
+	transform.x_angle = 0;
+	transform.y_angle = 30;
+	transform.z_angle = 0;
+	transform.x_offset = WINDOW_WIDTH / 2;
+	transform.y_offset = 200;
+	return(transform);
+}
+
+// wireframe drawing function
+void	draw_wireframe(t_data *data, t_map *map, t_transform *transform, int color)
+{
+	t_transform_vars	v;
+
+	v.scale = (float)transform->scale;
+	v.angle = (float)transform->y_angle + (float)transform->x_angle;
+	v.offset.x = transform->x_offset;
+	v.offset.y = transform->y_offset;
+	v.i = 0;
+	while (v.i < map->height)
 	{
-		j = 0;
-		while (j < map->width)
+		v.j = 0;
+		while (v.j < map->width)
 		{
-			point = get_3d_point_from_map(map, j, i);
-			projection = convert_3d_to_2d(point, scale, angle, offset);
-			if (j > 0)
-				bresenham_line(data, projection, prev_projection, color);
-			prev_projection = projection;
-			if (i > 0)
+			v.point = get_3d_point_from_map(map, v.j, v.i);
+			v.projection = convert_3d_to_2d(v.point, v.scale, v.angle + (float)transform->z_angle, v.offset);
+			if (v.j > 0)
+				bresenham_line(data, v.projection, v.prev_projection, color);
+			v.prev_projection = v.projection;
+			if (v.i > 0)
 			{
-				point_above = get_3d_point_from_map(map, j, i - 1);
-				projection_above = convert_3d_to_2d(point_above, scale, angle, offset);
-				bresenham_line(data, projection, projection_above, color);
+				v.point_above = get_3d_point_from_map(map, v.j, v.i - 1);
+				v.projection_above = convert_3d_to_2d(v.point_above, v.scale, v.angle + (float)transform->z_angle, v.offset);
+				bresenham_line(data, v.projection, v.projection_above, color);
 			}
-			j++;
+			v.j++;
 		}
-		i++;
+		v.i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:12:54 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/16 17:21:52 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/19 17:05:29 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,29 @@ typedef struct s_map
 	int	z_min;
 }	t_map;
 
+// struct for transformations
+typedef struct s_transform
+{
+	int	scale;
+	int	x_angle;
+	int	y_angle;
+	int	z_angle;
+	int	x_offset;
+	int	y_offset;
+}	t_transform;
+
 // main data holding struct
 typedef struct	s_data
 {
-	void	*mlx;
-	void	*win;
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-	t_map	*map;
+	void		*mlx;
+	void		*win;
+	void		*img;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+	t_map		*map;
+	t_transform transform;
 }	t_data;
 
 // struct for x y z
@@ -87,16 +99,20 @@ typedef struct s_increment
 	int y;
 }	t_increment;
 
-// struct for transformations
-typedef struct s_transform
+// because norminette sucks dick
+typedef struct	s_transform_vars
 {
-	int	scale;
-	int	x_angle;
-	int	y_angle;
-	int	z_angle;
-	int	x_offset;
-	int	y_offset;
-}	t_transform;
+	int			i;
+	int			j;
+	t_2d		projection;
+	t_2d		prev_projection;
+	t_2d		offset;
+	t_2d		projection_above;
+	t_3d		point;
+	t_3d		point_above;
+	float		angle;
+	float		scale;
+}				t_transform_vars;
 
 
 // function definitions
@@ -138,6 +154,8 @@ t_3d	get_3d_point_from_map(t_map *map, int x, int y);
 
 t_2d	convert_3d_to_2d(t_3d p, float scale, float angle, t_2d offset);
 
-void	draw_wireframe(t_data *data, t_map *map, int color);
+t_transform	init_transform();
+
+void	draw_wireframe(t_data *data, t_map *map, t_transform *transform, int color);
 
 #endif
