@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:12:54 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 17:05:29 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/19 17:35:47 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,8 @@ t_2d	convert_3d_to_2d(t_3d p, float scale, float angle, t_2d offset);
 
 t_transform	init_transform();
 
-void	draw_wireframe(t_data *data, t_map *map, t_transform *transform, int color);
+t_transform_vars init_transform_vars(t_transform *transform);
+
+void	draw_wireframe(t_data *data, t_transform_vars v, t_transform *transform, int color);
 
 #endif

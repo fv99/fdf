@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 17:00:27 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/19 17:29:34 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,12 @@ int		handle_keypress(int keysym, t_data *data)
 
 int		render(t_data *data)
 {
+	t_transform_vars v;
+
+	v = init_transform_vars(&data->transform);
 	if (data->win != NULL)
 	{
-		draw_wireframe(data, data->map, &data->transform, 0xFFFFFF);
+		draw_wireframe(data, v, &data->transform, 0xFFFFFF);
 		print_controls(data);
 	}
 	return (0);

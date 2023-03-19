@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 16:43:16 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 17:10:01 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/19 17:35:50 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_2d	convert_3d_to_2d(t_3d p, float scale, float angle, t_2d offset)
 	return(projection);
 }
 
+// initialize our camera struct, keypress changes these
 t_transform	init_transform()
 {
 	t_transform transform;
@@ -58,29 +59,46 @@ t_transform	init_transform()
 	return(transform);
 }
 
-// wireframe drawing function
-void	draw_wireframe(t_data *data, t_map *map, t_transform *transform, int color)
+// to make draw_wireframe below 25 lines
+// declaring of variables used in that function
+t_transform_vars init_transform_vars(t_transform *transform) 
 {
-	t_transform_vars	v;
+    t_transform_vars v;
 
+    v.scale = (float)transform->scale;
+    v.angle = (float)(transform->y_angle + transform->x_angle);
+    v.offset = (t_2d){transform->x_offset, transform->y_offset};
+    v.i = 0;
+    v.j = 0;
+    v.prev_projection = (t_2d){0, 0};
+    v.point = (t_3d){0, 0, 0};
+    v.projection = (t_2d){0, 0};
+    v.point_above = (t_3d){0, 0, 0};
+    v.projection_above = (t_2d){0, 0};
+    return (v);
+}
+
+// wireframe drawing function
+void	draw_wireframe(t_data *data, t_transform_vars v, t_transform *transform, int color)
+{
 	v.scale = (float)transform->scale;
 	v.angle = (float)transform->y_angle + (float)transform->x_angle;
 	v.offset.x = transform->x_offset;
 	v.offset.y = transform->y_offset;
 	v.i = 0;
-	while (v.i < map->height)
+	while (v.i < data->map->height)
 	{
 		v.j = 0;
-		while (v.j < map->width)
+		while (v.j < data->map->width)
 		{
-			v.point = get_3d_point_from_map(map, v.j, v.i);
+			v.point = get_3d_point_from_map(data->map, v.j, v.i);
 			v.projection = convert_3d_to_2d(v.point, v.scale, v.angle + (float)transform->z_angle, v.offset);
 			if (v.j > 0)
 				bresenham_line(data, v.projection, v.prev_projection, color);
 			v.prev_projection = v.projection;
 			if (v.i > 0)
 			{
-				v.point_above = get_3d_point_from_map(map, v.j, v.i - 1);
+				v.point_above = get_3d_point_from_map(data->map, v.j, v.i - 1);
 				v.projection_above = convert_3d_to_2d(v.point_above, v.scale, v.angle + (float)transform->z_angle, v.offset);
 				bresenham_line(data, v.projection, v.projection_above, color);
 			}
