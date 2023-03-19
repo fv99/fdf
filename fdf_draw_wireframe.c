@@ -6,79 +6,13 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 16:43:16 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 17:36:44 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/19 18:13:37 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-// gets 3d point struct at x y from map struct array
-t_3d	get_3d_point_from_map(t_map *map, int x, int y)
-{
-	t_3d	points;
-
-	points.x = x;
-	points.y = y;
-	points.z = map->array[y][x];
-	return(points);
-}
-
-/* 
-function to convert the 3d points to 2d
-uses isometric projection
-
-angle_rad = converts angle in degrees to radians
-projection.x calculates x coordinate by 
-subtracting the y coordinate of the 3d point from the x coord
-multiples the result by the cosine of the angle and the scale factor
-adds x offset to position the wireframe on the screen
-ditto for projection.y
- */
-t_2d	convert_3d_to_2d(t_3d p, float scale, float angle, t_2d offset)
-{
-	t_2d	projection;
-	float	angle_rad;
-
-	angle_rad = angle * M_PI / 180;
-	projection.x = (p.x - p.y) * cos(angle_rad) * scale + offset.x;
-	projection.y =  (-p.z + (p.x + p.y) * sin(angle_rad)) * scale + offset.y;
-	return(projection);
-}
-
-// initialize our camera struct, keypress changes these
-t_transform	init_transform()
-{
-	t_transform transform;
-
-	transform.scale = 50;
-	transform.x_angle = 0;
-	transform.y_angle = 30;
-	transform.z_angle = 0;
-	transform.x_offset = WINDOW_WIDTH / 2;
-	transform.y_offset = 200;
-	return(transform);
-}
-
-// to make draw_wireframe below 25 lines
-// declaring of variables used in that function
-t_transform_vars init_transform_vars(t_transform *transform) 
-{
-    t_transform_vars v;
-
-    v.scale = (float)transform->scale;
-    v.angle = (float)(transform->y_angle + transform->x_angle);
-    v.offset = (t_2d){transform->x_offset, transform->y_offset};
-    v.i = 0;
-    v.j = 0;
-    v.prev_projection = (t_2d){0, 0};
-    v.point = (t_3d){0, 0, 0};
-    v.projection = (t_2d){0, 0};
-    v.point_above = (t_3d){0, 0, 0};
-    v.projection_above = (t_2d){0, 0};
-    return (v);
-}
-
-// wireframe drawing function
+// wireframe drawing isometric projection
 void	draw_wireframe(t_data *data, t_transform_vars v, t_transform *transform, int color)
 {
 	v.scale = (float)transform->scale;
@@ -107,3 +41,34 @@ void	draw_wireframe(t_data *data, t_transform_vars v, t_transform *transform, in
 		v.i++;
 	}
 }
+
+// wireframe drawing parallel projection
+void	draw_wireframe_parallel(t_data *data, t_transform_vars v, t_transform *transform, int color)
+{
+	v.scale = (float)transform->scale;
+	v.angle = (float)transform->y_angle + (float)transform->x_angle;
+	v.offset.x = transform->x_offset;
+	v.offset.y = transform->y_offset;
+	v.i = 0;
+	while (v.i < data->map->height)
+	{
+		v.j = 0;
+		while (v.j < data->map->width)
+		{
+			v.point = get_3d_point_from_map(data->map, v.j, v.i);
+			v.projection = convert_parallel(v.point, v.scale, v.angle + (float)transform->z_angle, v.offset);
+			if (v.j > 0)
+				bresenham_line(data, v.projection, v.prev_projection, color);
+			v.prev_projection = v.projection;
+			if (v.i > 0)
+			{
+				v.point_above = get_3d_point_from_map(data->map, v.j, v.i - 1);
+				v.projection_above = convert_parallel(v.point_above, v.scale, v.angle + (float)transform->z_angle, v.offset);
+				bresenham_line(data, v.projection, v.projection_above, color);
+			}
+			v.j++;
+		}
+		v.i++;
+	}
+}
+

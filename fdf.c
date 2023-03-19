@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 17:46:44 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/19 18:21:28 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,35 +24,40 @@ void	print_controls(t_data *data)
 	mlx_string_put(data->mlx, data->win, 10, 30, 0xFFFFFF, "[WASD]  Movement");
 	mlx_string_put(data->mlx, data->win, 10, 45, 0xFFFFFF, "[Q/E]   Rotate");
 	mlx_string_put(data->mlx, data->win, 10, 60, 0xFFFFFF, "[+/-]   Zoom");
-	mlx_string_put(data->mlx, data->win, 10, 75, 0xFFFFFF, "[ESC]   Exit");
+	mlx_string_put(data->mlx, data->win, 10, 75, 0xFFFFFF, \
+	"[P]   Switch projection");
+	mlx_string_put(data->mlx, data->win, 10, 90, 0xFFFFFF, "[ESC]   Exit");
+	if (data->project == 0)
+		mlx_string_put(data->mlx, data->win, 1150, 10, 0xFFFFFF, "Projection: Isometric");
+	else
+		mlx_string_put(data->mlx, data->win, 1150, 10, 0xFFFFFF, "Projection: Parallel");
 }
 
 int	handle_keypress(int keysym, t_data *data)
 {
-	t_transform	*transform;
-
-	transform = &data->transform;
 	if (keysym == XK_Escape)
 	{
 		mlx_destroy_window(data->mlx, data->win);
 		exit (0);
 	}
 	else if (keysym == XK_w || keysym == XK_W)
-		transform->y_offset -= 10;
+		data->transform.y_offset -= 10;
 	else if (keysym == XK_s || keysym == XK_S)
-		transform->y_offset += 10;
+		data->transform.y_offset += 10;
 	else if (keysym == XK_a || keysym == XK_A)
-		transform->x_offset -= 10;
+		data->transform.x_offset -= 10;
 	else if (keysym == XK_d || keysym == XK_D)
-		transform->x_offset += 10;
+		data->transform.x_offset += 10;
 	else if (keysym == XK_plus || keysym == XK_KP_Add)
-		transform->scale += 5;
+		data->transform.scale += 5;
 	else if (keysym == XK_minus || keysym == XK_KP_Subtract)
-		transform->scale -= 5;
+		data->transform.scale -= 5;
 	else if (keysym == XK_q || keysym == XK_Q)
-		transform->z_angle += 2;
+		data->transform.z_angle += 2;
 	else if (keysym == XK_e || keysym == XK_E)
-		transform->z_angle -= 2;
+		data->transform.z_angle -= 2;
+	else if (keysym == XK_p || keysym == XK_P)
+		data->project = !data->project;
 	return (render_background(data, 0x000000, 0, WINDOW_WIDTH));
 }
 
@@ -63,7 +68,10 @@ int	render(t_data *data)
 	v = init_transform_vars(&data->transform);
 	if (data->win != NULL)
 	{
-		draw_wireframe(data, v, &data->transform, 0xFFFFFF);
+		if (data->project == 0)
+			draw_wireframe(data, v, &data->transform, 0xFFFFFF);
+		else if (data->project != 0)
+			draw_wireframe_parallel(data, v, &data->transform, 0xFFFFFF);
 		print_controls(data);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:12:54 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 17:52:17 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/19 18:17:08 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_data
 	int			bits_per_pixel;
 	int			line_length;
 	int			endian;
+	int			project;
 	t_map		*map;
 	t_transform	transform;
 }	t_data;
@@ -138,11 +139,15 @@ t_3d				get_3d_point_from_map(t_map *map, int x, int y);
 
 t_2d				convert_3d_to_2d(t_3d p, float scale, float angle, t_2d offset);
 
+t_2d				convert_parallel(t_3d p, float scale, float angle, t_2d offset);
+
 t_transform			init_transform();
 
 t_transform_vars	init_transform_vars(t_transform *transform);
 
 void				draw_wireframe(t_data *data, t_transform_vars v, t_transform *transform, int color);
+
+void				draw_wireframe_parallel(t_data *data, t_transform_vars v, t_transform *transform, int color);
 
 // void	test_bresenham_line(t_data *data);
 // int	test_map_read(t_map *map);
