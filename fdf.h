@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:12:54 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 18:17:08 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/19 18:47:18 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ typedef struct s_transform_vars
 
 // function definitions
 int					you_fucked_up(char *msg);
+
+int					handle_destroy_notify(t_data *data);
 
 void				print_controls(t_data *data);
 

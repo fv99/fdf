@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 18:24:23 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/19 18:47:34 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@ int	you_fucked_up(char *msg)
 {
 	ft_printf("\tERROR: %s\n", msg);
 	exit(1);
+}
+
+int	handle_destroy_notify(t_data *data)
+{
+	mlx_destroy_window(data->mlx, data->win);
+	exit(0);
 }
 
 void	print_controls(t_data *data)
@@ -28,9 +34,11 @@ void	print_controls(t_data *data)
 	"[P]     Switch projection");
 	mlx_string_put(data->mlx, data->win, 10, 90, 0xFFFFFF, "[ESC]   Exit");
 	if (data->project == 0)
-		mlx_string_put(data->mlx, data->win, 1150, 10, 0xFFFFFF, "Projection: Isometric");
+		mlx_string_put(data->mlx, data->win, 1150, 10, 0xFFFFFF, \
+		"Projection: Isometric");
 	else
-		mlx_string_put(data->mlx, data->win, 1150, 10, 0xFFFFFF, "Projection: Parallel");
+		mlx_string_put(data->mlx, data->win, 1150, 10, 0xFFFFFF, \
+		"Projection: Parallel");
 }
 
 int	handle_keypress(int keysym, t_data *data)
@@ -93,6 +101,7 @@ int	main(int argc, char **argv)
 		data.mlx = mlx_init();
 		data.win = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "FdF");
 		mlx_loop_hook(data.mlx, &render, &data);
+		mlx_hook(data.win, 17, 1L << 17, handle_destroy_notify, &data);
 		mlx_hook(data.win, 2, 1L << 0, handle_keypress, &data);
 		mlx_loop(data.mlx);
 		mlx_destroy_display(data.mlx);
