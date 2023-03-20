@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 12:53:09 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 18:41:29 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/20 17:46:24 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,64 +31,78 @@ int	render_background(t_data *data, int color, int start_x, int end_x)
 }
 
 // calculates the direction in which line should be drawn
-t_increment	*calculate_increment(t_increment *inc, int x1, int x2, int y1, int y2)
+t_increment	calculate_increment(t_line *line)
 {
-	if (x1 < x2)
-		inc->x = 1;
+	t_increment	inc;
+
+	if (line->x1 < line->x2)
+		inc.x = 1;
 	else
-		inc->x = -1;
-	if (y1 < y2)
-		inc->y = 1;
+		inc.x = -1;
+	if (line->y1 < line->y2)
+		inc.y = 1;
 	else
-		inc->y = -1;
-	return(inc);
+		inc.y = -1;
+	return (inc);
 }
 
 // error calculation for bresenhams algorithm
-void	update_error(int *error, int *coord, int error_diff, int coord_diff, int diff)
+void	update_error(t_line *line, int *coord, int error_diff, int coord_diff)
 {
-	if(*error > 0)
+	int	diff;
+
+	if (line->dx > line->dy)
+		diff = line->dx;
+	else
+		diff = line->dy;
+	if (line->error > 0)
 	{
 		*coord += coord_diff;
-		*error -= 2 * diff;
+		line->error -= 2 * diff;
 	}
-	*error += 2 * error_diff;
+	line->error += 2 * error_diff;
+}
+
+// another one because 25 lines is too much for 42 :))
+void	initialize_line_vars(t_line *line, t_increment *inc, int *x, int *y)
+{
+	line->dx = abs(line->x2 - line->x1);
+	line->dy = abs(line->y2 - line->y1);
+	inc->x = 0;
+	inc->y = 0;
+	*inc = calculate_increment(line);
+	*x = line->x1;
+	*y = line->y1;
+	line->error = line->dx - line->dy;
 }
 
 // draws a line with bresenhams algorithm
-// takes two 2d point structs as arguments
-void	bresenham_line(t_data *data, t_2d p1, t_2d p2, int color)
+// called by draw_line_wrapper function
+void	bresenham_line(t_data *data, t_line line, int color)
 {
 	t_increment	inc;
-	int	dx;
-	int	dy;
-	int error;
-	int	x;
-	int	y;
+	int			x;
+	int			y;
 
-	dx = abs(p2.x - p1.x);
-	dy = abs(p2.y - p1.y);
-	calculate_increment(&inc, p1.x, p2.x, p1.y, p2.y);
-	x = p1.x;
-	y = p1.y;
-	if (dx > dy)
+	initialize_line_vars(&line, &inc, &x, &y);
+	if (line.dx > line.dy)
 	{
-		error = 2 * dy - dx;
-		while (x != p2.x)
+		line.error = 2 * line.dy - line.dx;
+		while (x != line.x2)
 		{
 			mlx_pixel_put(data->mlx, data->win, x, y, color);
 			x += inc.x;
-			update_error(&error, &y, dy, inc.y, dx);
+			update_error(&line, &y, line.dy, inc.y);
 		}
 	}
 	else
 	{
-		error = 2 * dx - dy;
-		while (y != p2.y)
+		line.error = 2 * line.dx - line.dy;
+		while (y != line.y2)
 		{
 			mlx_pixel_put(data->mlx, data->win, x, y, color);
-			y+= inc.y;
-			update_error(&error, &x, dx, inc.x, dy);
+			y += inc.y;
+			update_error(&line, &x, line.dx, inc.x);
 		}
 	}
 }

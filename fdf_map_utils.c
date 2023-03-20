@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 16:44:13 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 17:44:04 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/20 17:52:29 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ t_map	*map_init(void)
 	map->array = NULL;
 	map->z_max = 0;
 	map->z_min = 0;
-	return(map);
+	return (map);
 }
 
 // does exactly what its called
 void	free_map_array(t_map *map)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < map->height)

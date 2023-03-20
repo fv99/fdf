@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 18:02:22 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 18:26:14 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/20 17:48:19 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_3d	get_3d_point_from_map(t_map *map, int x, int y)
 	points.x = x;
 	points.y = y;
 	points.z = map->array[y][x];
-	return(points);
+	return (points);
 }
 
 /* 
@@ -41,8 +41,8 @@ t_2d	convert_3d_to_2d(t_3d p, float scale, float angle, t_2d offset)
 
 	angle_rad = angle * M_PI / 180;
 	projection.x = (p.x - p.y) * cos(angle_rad) * scale + offset.x;
-	projection.y =  (-p.z + (p.x + p.y) * sin(angle_rad)) * scale + offset.y;
-	return(projection);
+	projection.y = (-p.z + (p.x + p.y) * sin(angle_rad)) * scale + offset.y;
+	return (projection);
 }
 
 t_2d	convert_parallel(t_3d p, float scale, float angle, t_2d offset)
@@ -55,9 +55,9 @@ t_2d	convert_parallel(t_3d p, float scale, float angle, t_2d offset)
 }
 
 // initialize our camera struct, keypress changes these
-t_transform	init_transform()
+t_transform	init_transform(void)
 {
-	t_transform transform;
+	t_transform	transform;
 
 	transform.scale = 50;
 	transform.x_angle = 0;
@@ -65,24 +65,24 @@ t_transform	init_transform()
 	transform.z_angle = 0;
 	transform.x_offset = WINDOW_WIDTH / 2;
 	transform.y_offset = 200;
-	return(transform);
+	return (transform);
 }
 
 // to make draw_wireframe below 25 lines
 // declaring of variables used in that function
-t_transform_vars init_transform_vars(t_transform *transform) 
+t_transform_vars	init_transform_vars(t_transform *transform)
 {
-    t_transform_vars v;
+	t_transform_vars	v;
 
-    v.scale = (float)transform->scale;
-    v.angle = (float)(transform->y_angle + transform->x_angle);
-    v.offset = (t_2d){transform->x_offset, transform->y_offset};
-    v.i = 0;
-    v.j = 0;
-    v.prev_projection = (t_2d){0, 0};
-    v.point = (t_3d){0, 0, 0};
-    v.projection = (t_2d){0, 0};
-    v.point_above = (t_3d){0, 0, 0};
-    v.projection_above = (t_2d){0, 0};
-    return (v);
+	v.scale = (float)transform->scale;
+	v.angle = (float)(transform->y_angle + transform->x_angle);
+	v.offset = (t_2d){transform->x_offset, transform->y_offset};
+	v.i = 0;
+	v.j = 0;
+	v.prev_projection = (t_2d){0, 0};
+	v.point = (t_3d){0, 0, 0};
+	v.projection = (t_2d){0, 0};
+	v.point_above = (t_3d){0, 0, 0};
+	v.projection_above = (t_2d){0, 0};
+	return (v);
 }

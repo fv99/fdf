@@ -6,16 +6,16 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:52:26 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/14 18:07:26 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/20 17:52:01 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 // finds the height of our map based on amount of lines
-int		get_height(char *filename)
+int	get_height(char *filename)
 {
-	int		fd; 
+	int		fd;
 	int		height;
 	char	*line;
 
@@ -32,18 +32,18 @@ int		get_height(char *filename)
 	}
 	free(line);
 	close(fd);
-	return(height);
+	return (height);
 }
 
 // counts the amount of coords in each line of file
-int		count_words(char *str, char c)
+int	count_words(char *str, char c)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str || *str == '\0')
-        return (0);
-	while(*str)
+		return (0);
+	while (*str)
 	{
 		if (*str != c)
 		{
@@ -54,13 +54,13 @@ int		count_words(char *str, char c)
 		else
 			str++;
 	}
-	return(i);
+	return (i);
 }
 
 // parses line to find value of each point
 int	*parse_line(char *line, t_map *map)
 {
-	int 	*row;
+	int		*row;
 	char	**words;
 	int		i;
 
@@ -100,8 +100,8 @@ t_map	*parse_map(t_map *map, char *filename)
 	map->width = count_words(line, ' ');
 	map->array = malloc(sizeof(int **) * map->height);
 	if (!map->array)
-        you_fucked_up("Allocation failed in parse_map");
-	while(line != NULL)
+		you_fucked_up("Allocation failed in parse_map");
+	while (line != NULL)
 	{
 		map->array[i] = parse_line(line, map);
 		free(line);
@@ -109,5 +109,5 @@ t_map	*parse_map(t_map *map, char *filename)
 		line = get_next_line(fd);
 	}
 	close(fd);
-	return(map);
+	return (map);
 }

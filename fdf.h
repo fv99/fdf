@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:12:54 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 18:47:18 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/20 17:44:03 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_map
 	int	z_min;
 }	t_map;
 
-// struct for transformations
+// struct for transformations (camera etc.)
 typedef struct s_transform
 {
 	int	scale;
@@ -82,6 +82,7 @@ typedef struct s_2d
 	int	y;
 }	t_2d;
 
+// i forgot why we have the same struct twice
 typedef struct s_increment
 {
 	int	x;
@@ -103,6 +104,18 @@ typedef struct s_transform_vars
 	float	scale;
 }			t_transform_vars;
 
+// line holding struct
+typedef struct s_line
+{
+	int			x1;
+	int 		x2;
+	int 		y1;
+	int 		y2;
+	int			dx;
+	int			dy;
+	t_increment	inc;
+	int			error;
+}	t_line;
 
 // function definitions
 int					you_fucked_up(char *msg);
@@ -131,11 +144,15 @@ int					*parse_line(char *line, t_map *map);
 
 t_map				*parse_map(t_map *map, char *filename);
 
-t_increment			*calculate_increment(t_increment *inc, int x1, int x2, int y1, int y2);
+t_increment			calculate_increment(t_line *line);
 
-void				update_error(int *error, int *coord, int error_diff, int coord_diff, int diff);
+void				update_error(t_line *line, int *coord, int error_diff, int coord_diff);
 
-void				bresenham_line(t_data *data, t_2d p1, t_2d p2, int color);
+void				draw_line_wrapper(t_data *data, t_2d projection, t_2d prev_projection, int color);
+
+void				initialize_line_vars(t_line *line, t_increment *inc, int *x, int *y);
+
+void				bresenham_line(t_data *data, t_line line, int color);
 
 t_3d				get_3d_point_from_map(t_map *map, int x, int y);
 
