@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:12:54 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/20 17:44:03 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:38:40 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_data
 	int			line_length;
 	int			endian;
 	int			project;
+	int			wu_tang;
 	t_map		*map;
 	t_transform	transform;
 }	t_data;
@@ -88,6 +89,19 @@ typedef struct s_increment
 	int	x;
 	int	y;
 }	t_increment;
+
+// gradient and intensity structs for wu's line algorithm
+typedef struct s_gradient
+{
+	double	x;
+	double	y;
+}	t_gradient;
+
+typedef struct s_intensity
+{
+	int	whole;
+	int	fractional;
+}	t_intensity;
 
 // because norminette sucks
 typedef struct s_transform_vars
@@ -117,24 +131,29 @@ typedef struct s_line
 	int			error;
 }	t_line;
 
-// function definitions
+//			fdf.c
+
 int					you_fucked_up(char *msg);
 
 int					handle_destroy_notify(t_data *data);
 
 void				print_controls(t_data *data);
 
-int					render_background(t_data *data, int color, int start_x, int end_x);
-
-int					key_hook(int keysym, t_data *data);
+int					handle_keypress(int keysym, t_data *data);
 
 int					render(t_data *data);
+
+//			fdf_map_utils.c
+
+// int				test_map_read(t_map *map);
 
 t_map				*map_init(void);
 
 void				free_map_array(t_map *map);
 
 void				free_split(char **str);
+
+//			fdf_map_parser.c
 
 int					get_height(char *filename);
 
@@ -144,15 +163,7 @@ int					*parse_line(char *line, t_map *map);
 
 t_map				*parse_map(t_map *map, char *filename);
 
-t_increment			calculate_increment(t_line *line);
-
-void				update_error(t_line *line, int *coord, int error_diff, int coord_diff);
-
-void				draw_line_wrapper(t_data *data, t_2d projection, t_2d prev_projection, int color);
-
-void				initialize_line_vars(t_line *line, t_increment *inc, int *x, int *y);
-
-void				bresenham_line(t_data *data, t_line line, int color);
+//			fdf_draw_utils.c
 
 t_3d				get_3d_point_from_map(t_map *map, int x, int y);
 
@@ -164,11 +175,42 @@ t_transform			init_transform();
 
 t_transform_vars	init_transform_vars(t_transform *transform);
 
+//			fdf_draw_utils_2.c
+
+int					render_background(t_data *data, int color, int start_x, int end_x);
+
+t_gradient			wu_gradient(t_line *line);
+
+t_intensity			wu_intensity(int base_color, double weight);
+
+void				swap_points(t_line *line);
+
+//			fdf_draw_bresenham_line.c
+
+t_increment			calculate_increment(t_line *line);
+
+void				update_error(t_line *line, int *coord, int error_diff, int coord_diff);
+
+void				initialize_line_vars(t_line *line, t_increment *inc, int *x, int *y);
+
+void				bresenham_line(t_data *data, t_line line, int color);
+
+// void				test_bresenham_line(t_data *data);
+
+//			fdf_draw_wu_line.c
+
+void				wu_line_horizontal(t_data *data, t_line line, int color);
+
+void				wu_line_vertical(t_data *data, t_line line, int color);
+
+void				wu_line(t_data *data, t_line line, int color);
+
+//			fdf_draw_wireframe.c
+
+void				draw_line_wrapper(t_data *data, t_2d projection, t_2d prev_projection, int color);
+
 void				draw_wireframe(t_data *data, t_transform_vars v, t_transform *transform, int color);
 
 void				draw_wireframe_parallel(t_data *data, t_transform_vars v, t_transform *transform, int color);
-
-// void	test_bresenham_line(t_data *data);
-// int	test_map_read(t_map *map);
 
 #endif

@@ -6,29 +6,11 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 12:53:09 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/20 17:46:24 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:40:12 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-// will draw a vertical strip from start_x to end_x
-int	render_background(t_data *data, int color, int start_x, int end_x)
-{
-	int	x;
-	int	y;
-
-	y = 0;
-	while (y < WINDOW_HEIGHT)
-	{
-		x = start_x;
-		while (x < end_x)
-			mlx_pixel_put(data->mlx, data->win, x++, y, color);
-		++y;
-	}
-	print_controls(data);
-	return (0);
-}
 
 // calculates the direction in which line should be drawn
 t_increment	calculate_increment(t_line *line)

@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 18:02:22 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/20 17:48:19 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:35:26 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_2d	convert_3d_to_2d(t_3d p, float scale, float angle, t_2d offset)
 	return (projection);
 }
 
+// converts 3d points for parallel projection
 t_2d	convert_parallel(t_3d p, float scale, float angle, t_2d offset)
 {
 	t_2d	projection;

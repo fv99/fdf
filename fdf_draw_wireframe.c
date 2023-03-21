@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 16:43:16 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/20 18:28:04 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:18:45 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 this is how we call bresenham_line in draw_wirefame
 technically we shouldnt need this, just call directly with line struct
-but i cant be bothered to refactor because of norminette sucking ;)) 
+but i cant be bothered to refactor because of bs 4 argument limit ;)) 
  */
 void	draw_line_wrapper(t_data *data, \
 		t_2d projection, t_2d prev_projection, int color)
@@ -26,7 +26,10 @@ void	draw_line_wrapper(t_data *data, \
 	line.y1 = prev_projection.y;
 	line.x2 = projection.x;
 	line.y2 = projection.y;
-	bresenham_line(data, line, color);
+	if (data->wu_tang == 0)
+		bresenham_line(data, line, color);
+	else
+		wu_line(data, line, color);
 }
 
 // wireframe drawing isometric projection

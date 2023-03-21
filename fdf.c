@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/19 18:47:34 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:17:53 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,27 @@ void	print_controls(t_data *data)
 	mlx_string_put(data->mlx, data->win, 10, 60, 0xFFFFFF, "[+/-]   Zoom");
 	mlx_string_put(data->mlx, data->win, 10, 75, 0xFFFFFF, \
 	"[P]     Switch projection");
-	mlx_string_put(data->mlx, data->win, 10, 90, 0xFFFFFF, "[ESC]   Exit");
+		mlx_string_put(data->mlx, data->win, 10, 90, 0xFFFFFF, \
+	"[L]     Anti-aliasing ON/OFF");
+	mlx_string_put(data->mlx, data->win, 10, 115, 0xFFFFFF, "[ESC]   Exit");
 	if (data->project == 0)
 		mlx_string_put(data->mlx, data->win, 1150, 10, 0xFFFFFF, \
 		"Projection: Isometric");
 	else
 		mlx_string_put(data->mlx, data->win, 1150, 10, 0xFFFFFF, \
 		"Projection: Parallel");
+	if (data->wu_tang == 0)
+		mlx_string_put(data->mlx, data->win, 1150, 25, 0xFFFFFF, \
+		"Anti-aliasing: [OFF]");
+	else
+		mlx_string_put(data->mlx, data->win, 1150, 25, 0xFFFFFF, \
+		"Anti-aliasing: [ON]");
 }
 
 int	handle_keypress(int keysym, t_data *data)
 {
 	if (keysym == XK_Escape)
-	{
-		mlx_destroy_window(data->mlx, data->win);
-		exit (0);
-	}
+		handle_destroy_notify(data);
 	else if (keysym == XK_w || keysym == XK_W)
 		data->transform.y_offset -= 10;
 	else if (keysym == XK_s || keysym == XK_S)
@@ -66,6 +71,8 @@ int	handle_keypress(int keysym, t_data *data)
 		data->transform.z_angle -= 2;
 	else if (keysym == XK_p || keysym == XK_P)
 		data->project = !data->project;
+	else if (keysym == XK_l || keysym == XK_L)
+		data->wu_tang = !data->wu_tang;
 	return (render_background(data, 0x000000, 0, WINDOW_WIDTH));
 }
 
