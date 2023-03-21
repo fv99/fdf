@@ -13,35 +13,32 @@ First graphical project at 42 Prague, using the [minilibx](https://github.com/42
 - The use of the images of the MiniLibX is mandatory
 
 **Bonus part:**
-- Include one extra projection (such as parallel or conic)
+- Include one extra projection (**Parallel**)
 - Zoom in and out.
 - Translate your model.
 - Rotate your model.
-- Add one more bonus of your choice
+- Add one more bonus of your choice - **Anti-Aliasing**
 
-### Example input:
+### **Example input:**
 ```
-$>cat 40.fdf
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 4 4 0 0 4 4 0 0 0 4 4 4 4 4 0 0 0
-0 0 4 4 0 0 4 4 0 0 0 0 0 0 0 4 4 0 0
-0 0 4 4 0 0 4 4 0 0 0 0 0 0 0 4 4 0 0
-0 0 4 4 4 4 4 4 0 0 0 0 4 4 4 4 0 0 0
-0 0 0 4 4 4 4 4 0 0 0 4 4 0 0 0 0 0 0
-0 0 0 0 0 0 4 4 0 0 0 4 4 0 0 0 0 0 0
-0 0 0 0 0 0 4 4 0 0 0 4 4 4 4 4 4 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+$>cat test.fdf
+0 0 1 2 3 4 5 6 7 8 9
+0 0 0 1 2 3 4 5 6 7 8
+0 0 0 0 1 2 3 4 5 6 7
+0 0 0 0 0 1 2 3 4 5 6
+0 0 0 0 0 0 1 2 3 4 5
+0 0 0 0 0 0 0 1 2 3 4
+0 0 0 0 0 0 0 0 1 2 3
+0 0 0 0 0 0 0 0 0 1 2
+0 0 0 0 0 0 0 0 0 0 1
 $>
 ```
-Each number represents a point in space:
-- The horizontal position corresponds to its axis.
-- The vertical position corresponds to its ordinate.
-- The value corresponds to its altitude.
+**Produces the following output:**
+
+![screenshot](https://user-images.githubusercontent.com/108353744/226677024-10c8a229-8c5e-46ab-abb0-9da35c72c9b3.png)
 
 ## **Usage:**
-*This program was compiled and tested on Linux. If you have problems on other platforms, just install Gentoo*
+*This program was compiled and tested on Linux.*
 
 ```shell
 # Clone the repository:
@@ -53,7 +50,3 @@ $> make
 # Run with valid map as parameter:
 $> ./fdf map.fdf
 ```
-
-## **Controls:**
-
-*To be added*
