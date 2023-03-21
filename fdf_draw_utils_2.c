@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:32:39 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/21 16:35:42 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/21 17:00:12 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,22 @@ int	render_background(t_data *data, int color, int start_x, int end_x)
 	return (0);
 }
 
+// for initializing the variables for wu's line
+void	initialize_wu_vars(t_line *line, t_increment *inc, double *x, double *y)
+{
+	*x = (double)line->x1;
+	*y = (double)line->y1;
+
+	if (line->y2 - line->y1 > 0)
+		inc->y = 1;
+	else
+		inc->y = -1;
+	if (line->x2 - line->x1 > 0)
+		inc->x = 1;
+	else
+		inc->x = -1;
+}
+
 /* 
 calculates gradients for wu's algorithm
 grad.x is delta x divided by delta y
@@ -40,8 +56,8 @@ t_gradient	wu_gradient(t_line *line)
 {
 	t_gradient	grad;
 
-	grad.x = (double)(line->x2 - line->x1) / (double)(line->y2 - line->y1);
-	grad.y = (double)(line->y2 - line->y1) / (double)(line->x2 - line->x1);
+	grad.x = (double)(line->y2 - line->y1) / (double)(line->x2 - line->x1);
+	grad.y = (double)(line->x2 - line->x1) / (double)(line->y2 - line->y1);
 	return (grad);
 }
 

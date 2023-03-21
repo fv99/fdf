@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:12:54 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/21 16:38:40 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:50:49 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,8 @@ t_transform_vars	init_transform_vars(t_transform *transform);
 //			fdf_draw_utils_2.c
 
 int					render_background(t_data *data, int color, int start_x, int end_x);
+
+void				initialize_wu_vars(t_line *line, t_increment *inc, double *x, double *y);
 
 t_gradient			wu_gradient(t_line *line);
 
