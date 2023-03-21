@@ -6,7 +6,7 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:32:39 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/21 17:00:12 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/21 17:16:47 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,40 @@ based on the pixels distance from the ideal line
 weight = distance of pixel from ideal line
 the closer the distance, higher the weight
 
+we extract the R G B components from the base color
+base color = 24 bit integer, first 8 bits are the red component etc.
+so we extract the colors by shifting by 8/16 bits
+
+then we calculate the whole and fractional intensities
 intensity.whole = color of the pixel closer to the ideal line
 intensity.fractional = color that is farther from ideal line
-weight * base color = blends line color with background
+weight * base color = blended line color with background
  */
 t_intensity	wu_intensity(int base_color, double weight)
 {
-	t_intensity intensity;
+    t_intensity intensity;
+    int r_base;
+    int g_base;
+    int b_base;
+    int r_whole;
+    int g_whole;
+    int b_whole;
+    int r_fractional;
+    int g_fractional;
+    int b_fractional;
 
-	intensity.whole = base_color;
-	intensity.fractional = (int)(weight * (double)base_color);
-	return(intensity);
+	r_base = (base_color >> 16) & 0xFF;
+	g_base = (base_color >> 8) & 0xFF;
+	b_base = base_color & 0xFF;
+	r_whole = (int)(r_base * (1 - weight));
+	g_whole = (int)(g_base * (1 - weight));
+	b_whole = (int)(b_base * (1 - weight));
+	r_fractional = (int)(r_base * weight);
+	g_fractional = (int)(g_base * weight);
+	b_fractional = (int)(b_base * weight);
+    intensity.whole = (r_whole << 16) | (g_whole << 8) | b_whole;
+    intensity.fractional = (r_fractional << 16) | (g_fractional << 8) | b_fractional;
+    return (intensity);
 }
 
 /* 
