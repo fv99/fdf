@@ -6,14 +6,14 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 18:02:22 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/21 16:35:26 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/22 14:28:19 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 // gets 3d point struct at x y from map struct array
-t_3d	get_3d_point_from_map(t_map *map, int x, int y)
+t_3d	xyz_from_map(t_map *map, int x, int y)
 {
 	t_3d	points;
 
@@ -34,7 +34,7 @@ multiples the result by the cosine of the angle and the scale factor
 adds x offset to position the wireframe on the screen
 ditto for projection.y
  */
-t_2d	convert_3d_to_2d(t_3d p, float scale, float angle, t_2d offset)
+t_2d	_3d_2d(t_3d p, float scale, float angle, t_2d offset)
 {
 	t_2d	projection;
 	float	angle_rad;
@@ -46,7 +46,7 @@ t_2d	convert_3d_to_2d(t_3d p, float scale, float angle, t_2d offset)
 }
 
 // converts 3d points for parallel projection
-t_2d	convert_parallel(t_3d p, float scale, float angle, t_2d offset)
+t_2d	_3d_2d_p(t_3d p, float scale, float angle, t_2d offset)
 {
 	t_2d	projection;
 
@@ -75,15 +75,16 @@ t_transform_vars	init_transform_vars(t_transform *transform)
 {
 	t_transform_vars	v;
 
-	v.scale = (float)transform->scale;
-	v.angle = (float)(transform->y_angle + transform->x_angle);
-	v.offset = (t_2d){transform->x_offset, transform->y_offset};
+	v.s = (float)transform->scale;
+	v.a = (float)(transform->y_angle + transform->x_angle);
+	v.off.x = transform->x_offset;
+	v.off.y = transform->y_offset;
 	v.i = 0;
 	v.j = 0;
-	v.prev_projection = (t_2d){0, 0};
-	v.point = (t_3d){0, 0, 0};
-	v.projection = (t_2d){0, 0};
-	v.point_above = (t_3d){0, 0, 0};
-	v.projection_above = (t_2d){0, 0};
+	v.prev_proj = (t_2d){0, 0};
+	v.p = (t_3d){0, 0, 0};
+	v.proj = (t_2d){0, 0};
+	v.p_abv = (t_3d){0, 0, 0};
+	v.p_a = (t_2d){0, 0};
 	return (v);
 }

@@ -6,36 +6,17 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:32:39 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/21 17:16:47 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/22 14:31:43 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-// will draw a vertical strip from start_x to end_x
-int	render_background(t_data *data, int color, int start_x, int end_x)
-{
-	int	x;
-	int	y;
-
-	y = 0;
-	while (y < WINDOW_HEIGHT)
-	{
-		x = start_x;
-		while (x < end_x)
-			mlx_pixel_put(data->mlx, data->win, x++, y, color);
-		++y;
-	}
-	print_controls(data);
-	return (0);
-}
 
 // for initializing the variables for wu's line
 void	initialize_wu_vars(t_line *line, t_increment *inc, double *x, double *y)
 {
 	*x = (double)line->x1;
 	*y = (double)line->y1;
-
 	if (line->y2 - line->y1 > 0)
 		inc->y = 1;
 	else
@@ -78,29 +59,22 @@ weight * base color = blended line color with background
  */
 t_intensity	wu_intensity(int base_color, double weight)
 {
-    t_intensity intensity;
-    int r_base;
-    int g_base;
-    int b_base;
-    int r_whole;
-    int g_whole;
-    int b_whole;
-    int r_fractional;
-    int g_fractional;
-    int b_fractional;
+	t_intensity	intensity;
+	t_color		vars;
 
-	r_base = (base_color >> 16) & 0xFF;
-	g_base = (base_color >> 8) & 0xFF;
-	b_base = base_color & 0xFF;
-	r_whole = (int)(r_base * (1 - weight));
-	g_whole = (int)(g_base * (1 - weight));
-	b_whole = (int)(b_base * (1 - weight));
-	r_fractional = (int)(r_base * weight);
-	g_fractional = (int)(g_base * weight);
-	b_fractional = (int)(b_base * weight);
-    intensity.whole = (r_whole << 16) | (g_whole << 8) | b_whole;
-    intensity.fractional = (r_fractional << 16) | (g_fractional << 8) | b_fractional;
-    return (intensity);
+	vars.r_base = (base_color >> 16) & 0xFF;
+	vars.g_base = (base_color >> 8) & 0xFF;
+	vars.b_base = base_color & 0xFF;
+	vars.r_whole = (int)(vars.r_base * (1 - weight));
+	vars.g_whole = (int)(vars.g_base * (1 - weight));
+	vars.b_whole = (int)(vars.b_base * (1 - weight));
+	vars.r_fractional = (int)(vars.r_base * weight);
+	vars.g_fractional = (int)(vars.g_base * weight);
+	vars.b_fractional = (int)(vars.b_base * weight);
+	intensity.whole = (vars.r_whole << 16) | (vars.g_whole << 8) | vars.b_whole;
+	intensity.fractional = (vars.r_fractional << 16) | \
+							(vars.g_fractional << 8) | vars.b_fractional;
+	return (intensity);
 }
 
 /* 
@@ -110,7 +84,7 @@ or from bottom to top
  */
 void	swap_points(t_line *line)
 {
-	int tmp;
+	int	tmp;
 
 	tmp = line->x1;
 	line->x1 = line->x2;
@@ -118,4 +92,11 @@ void	swap_points(t_line *line)
 	tmp = line->y1;
 	line->y1 = line->y2;
 	line->y2 = tmp;
+}
+
+// error handling
+int	you_fucked_up(char *msg)
+{
+	ft_printf("\tERROR: %s\n", msg);
+	exit(1);
 }

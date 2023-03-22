@@ -6,17 +6,11 @@
 /*   By: fvonsovs <fvonsovs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:29:59 by fvonsovs          #+#    #+#             */
-/*   Updated: 2023/03/21 17:07:44 by fvonsovs         ###   ########.fr       */
+/*   Updated: 2023/03/22 14:28:17 by fvonsovs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-int	you_fucked_up(char *msg)
-{
-	ft_printf("\tERROR: %s\n", msg);
-	exit(1);
-}
 
 int	handle_destroy_notify(t_data *data)
 {
@@ -32,9 +26,9 @@ void	print_controls(t_data *data)
 	mlx_string_put(data->mlx, data->win, 10, 60, 0xFFFFFF, "[+/-]   Zoom");
 	mlx_string_put(data->mlx, data->win, 10, 75, 0xFFFFFF, \
 	"[P]     Switch projection");
-		mlx_string_put(data->mlx, data->win, 10, 90, 0xFFFFFF, \
+	mlx_string_put(data->mlx, data->win, 10, 90, 0xFFFFFF, \
 	"[L]     Anti-aliasing ON/OFF");
-	mlx_string_put(data->mlx, data->win, 10, 115, 0xFFFFFF, "[ESC]   Exit");
+	mlx_string_put(data->mlx, data->win, 10, 105, 0xFFFFFF, "[ESC]   Exit");
 	if (data->project == 0)
 		mlx_string_put(data->mlx, data->win, 1150, 10, 0xFFFFFF, \
 		"Projection: Isometric");

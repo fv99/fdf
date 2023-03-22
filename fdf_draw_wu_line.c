@@ -31,12 +31,13 @@ void	wu_line_horizontal(t_data *data, t_line line, int color)
 
 	initialize_wu_vars(&line, &inc, &x, &y);
 	grad = wu_gradient(&line);
-	
-	while(x < line.x2)
+	while (x < line.x2)
 	{
 		intensity = wu_intensity(color, 1 - fabs(y - round(y)));
-		mlx_pixel_put(data->mlx, data->win, (int)x, (int)round(y), intensity.whole);
-		mlx_pixel_put(data->mlx, data->win, (int)x, (int)round(y) + 1, intensity.fractional);
+		mlx_pixel_put(data->mlx, data->win, \
+			(int)x, (int)round(y), intensity.whole);
+		mlx_pixel_put(data->mlx, data->win, (int)x, \
+			(int)round(y) + 1, intensity.fractional);
 		x += inc.x;
 		y += inc.x * grad.x;
 	}
@@ -53,12 +54,13 @@ void	wu_line_vertical(t_data *data, t_line line, int color)
 
 	initialize_wu_vars(&line, &inc, &x, &y);
 	grad = wu_gradient(&line);
-
 	while (y < line.y2)
 	{
 		intensity = wu_intensity(color, 1 - fabs(x - round(x)));
-		mlx_pixel_put(data->mlx, data->win, (int)round(x), (int)y, intensity.whole);
-		mlx_pixel_put(data->mlx, data->win, (int)round(x) + 1, (int)y, intensity.fractional);
+		mlx_pixel_put(data->mlx, data->win, \
+			(int)round(x), (int)y, intensity.whole);
+		mlx_pixel_put(data->mlx, data->win, \
+			(int)round(x) + 1, (int)y, intensity.fractional);
 		y += inc.y;
 		x += inc.y * grad.y;
 	}
@@ -71,9 +73,8 @@ void	wu_line(t_data *data, t_line line, int color)
 	if (line.y1 == line.y2)
 	{
 		bresenham_line(data, line, color);
-		return;
+		return ;
 	}
-
 	if (abs(line.y2 - line.y1) < abs(line.x2 - line.x1))
 	{
 		if (line.x1 > line.x2)
